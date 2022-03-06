@@ -1,10 +1,12 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
 
    ArrayList<Fighter> fighters;
+   HashMap<String,Fighter> fighterHashMap;
 
    public static void main(String[] args) {
       Main app = new Main();
@@ -37,9 +39,20 @@ public class Main {
       fighters.add(fighter10);
 
 
+      fighterHashMap = new HashMap<>();
+      fighterHashMap.put("I.R",fighter1);
+      fighterHashMap.put("C.MG",fighter2);
+      fighterHashMap.put("D.P",fighter3);
+      fighterHashMap.put("C.O",fighter4);
+      fighterHashMap.put("J.G",fighter5);
+      fighterHashMap.put("K.U",fighter6);
+      fighterHashMap.put("D.L",fighter7);
+      fighterHashMap.put("A.N",fighter8);
+      fighterHashMap.put("H.H",fighter9);
+      fighterHashMap.put("J.M",fighter10);
+
+
       displayMainMenu();
-
-
    }
 
    public void displayMainMenu() {
