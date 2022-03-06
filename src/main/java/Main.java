@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -40,7 +37,7 @@ public class Main {
 
 
       fighterHashMap = new HashMap<>();
-      fighterHashMap.put("I.R",fighter1);
+      fighterHashMap.put("I.A",fighter1);
       fighterHashMap.put("C.MG",fighter2);
       fighterHashMap.put("D.P",fighter3);
       fighterHashMap.put("C.O",fighter4);
@@ -59,11 +56,13 @@ public class Main {
 
       final String MENU_ITEMS = "\n*** Main Menu ***\n"
               + "1. Display all ArrayList elements\n"
-              + "2. Exit\n"
-              + "Enter Option [1,2]\n";
+              + "2. Find object by key from HashMap\n"
+              + "3. Exit\n"
+              + "Enter Option [1,2,3]\n";
 
       final int DISPLAY_ARRAYLIST = 1;
-      final int EXIT = 2;
+      final int FIND_OBJECT_HASHMAP = 2;
+      final int EXIT = 3;
 
       Scanner keyboard = new Scanner(System.in);
       int option = 0;
@@ -78,6 +77,10 @@ public class Main {
                case DISPLAY_ARRAYLIST:
                   System.out.println("Display all ArrayList elements chosen\n");
                   displayArrayList(fighters);
+                  break;
+               case FIND_OBJECT_HASHMAP:
+                  System.out.println("Find object by key from hashmap option chosen");
+                  findObjectFromHashmap(fighterHashMap);
                   break;
                case EXIT:
                   System.out.println("Exit menu option chosen");
@@ -100,5 +103,29 @@ public class Main {
       for (Fighter fighter : fighters) {
          System.out.println(fighter);
       }
+      promptEnterKey();
    }
+
+   public void findObjectFromHashmap(HashMap<String,Fighter> hashMap){
+      System.out.println("Enter Initials of Fighter (e.g Joe Bloggs = 'J.B' ) :");
+
+      Scanner keyboard = new Scanner(System.in);
+      String input = keyboard.nextLine().toUpperCase(Locale.ROOT);
+
+      if (hashMap.get(input) == null){
+         System.out.println("Object with provided key not found");
+         promptEnterKey();
+      }else {
+         System.out.println(hashMap.get(input));
+         promptEnterKey();
+      }
+
+   }
+
+   public void promptEnterKey(){
+      System.out.println("Press \"ENTER\" to continue...");
+      Scanner scanner = new Scanner(System.in);
+      scanner.nextLine();
+   }
+
    }
