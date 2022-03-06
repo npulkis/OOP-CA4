@@ -7,6 +7,10 @@ public class Fighter {
     private int losses;
     private double winLoseRatio;
 
+    public String getName() {
+        return name;
+    }
+
     Fighter(String name, int wins, int losses){
         this.name = name;
         this.totalFights= wins + losses;

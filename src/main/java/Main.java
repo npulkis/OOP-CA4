@@ -3,7 +3,8 @@ import java.util.*;
 public class Main {
 
    ArrayList<Fighter> fighters;
-   HashMap<String,Fighter> fighterHashMap;
+   Map<String,Fighter> fighterHashMap;
+   Map<String,Fighter> fighterTreeMap;
 
    public static void main(String[] args) {
       Main app = new Main();
@@ -23,7 +24,7 @@ public class Main {
       Fighter fighter10 = new Fighter("Jorge Masvidal",35,16);
 
 
-       fighters = new ArrayList<>();
+      fighters = new ArrayList<>();
       fighters.add(fighter1);
       fighters.add(fighter2);
       fighters.add(fighter3);
@@ -49,6 +50,19 @@ public class Main {
       fighterHashMap.put("J.M",fighter10);
 
 
+      fighterTreeMap = new TreeMap<>(new ComparatorTreeMapKey());
+      fighterTreeMap.put("Israel",fighter1);
+      fighterTreeMap.put("Conor",fighter2);
+      fighterTreeMap.put("Dustin",fighter3);
+      fighterTreeMap.put("Charles",fighter4);
+      fighterTreeMap.put("Justin",fighter5);
+      fighterTreeMap.put("Kamaru",fighter6);
+      fighterTreeMap.put("Derrick",fighter7);
+      fighterTreeMap.put("Amanda",fighter8);
+      fighterTreeMap.put("Holly",fighter9);
+      fighterTreeMap.put("Jorge",fighter10);
+
+
       displayMainMenu();
    }
 
@@ -57,12 +71,14 @@ public class Main {
       final String MENU_ITEMS = "\n*** Main Menu ***\n"
               + "1. Display all ArrayList elements\n"
               + "2. Find object by key from HashMap\n"
-              + "3. Exit\n"
+              + "3. Display TreeMap\n"
+              + "4. Exit\n"
               + "Enter Option [1,2,3]\n";
 
       final int DISPLAY_ARRAYLIST = 1;
       final int FIND_OBJECT_HASHMAP = 2;
-      final int EXIT = 3;
+      final int DISPLAY_TREEMAP = 3;
+      final int EXIT = 4;
 
       Scanner keyboard = new Scanner(System.in);
       int option = 0;
@@ -82,6 +98,9 @@ public class Main {
                   System.out.println("Find object by key from hashmap option chosen");
                   findObjectFromHashmap(fighterHashMap);
                   break;
+               case DISPLAY_TREEMAP:
+                  System.out.println("Display Treemap option chosen.");
+                  displayTreeMap(fighterTreeMap);
                case EXIT:
                   System.out.println("Exit menu option chosen");
                   break;
@@ -106,7 +125,7 @@ public class Main {
       promptEnterKey();
    }
 
-   public void findObjectFromHashmap(HashMap<String,Fighter> hashMap){
+   public void findObjectFromHashmap(Map<String,Fighter> hashMap){
       System.out.println("Enter Initials of Fighter (e.g Joe Bloggs = 'J.B' ) :");
 
       Scanner keyboard = new Scanner(System.in);
@@ -114,16 +133,21 @@ public class Main {
 
       if (hashMap.get(input) == null){
          System.out.println("Object with provided key not found");
-         promptEnterKey();
       }else {
          System.out.println(hashMap.get(input));
-         promptEnterKey();
       }
-
+      promptEnterKey();
    }
 
+   public void displayTreeMap(Map<String,Fighter> treeMap) {
+
+      for (Map.Entry<String, Fighter> entry : treeMap.entrySet()) {
+         System.out.println("Key: "+entry.getKey()+", Value: "+entry.getValue());
+      }
+      promptEnterKey();
+   }
    public void promptEnterKey(){
-      System.out.println("Press \"ENTER\" to continue...");
+      System.out.println("\nPress \"ENTER\" to continue...");
       Scanner scanner = new Scanner(System.in);
       scanner.nextLine();
    }
