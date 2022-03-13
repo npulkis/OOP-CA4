@@ -1,11 +1,16 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Objects;
 
-public class Fighter {
+public class Fighter implements Comparable<Fighter> {
     private String name;
     private int totalFights;
     private int wins;
     private int losses;
     private double winLoseRatio;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
 
     public String getName() {
         return name;
@@ -16,7 +21,42 @@ public class Fighter {
         this.totalFights= wins + losses;
         this.wins=wins;
         this.losses=losses;
-        this.winLoseRatio = wins / losses;
+        BigDecimal bd = new BigDecimal(((double)wins) / losses).setScale(2, RoundingMode.HALF_UP);
+
+        this.winLoseRatio = bd.doubleValue();
+    }
+
+    @Override
+    public String toString() {
+        return "Fighter{" +
+                "name='" + name + '\'' +
+                ", totalFights=" + totalFights +
+                ", wins=" + wins +
+                ", losses=" + losses +
+                ", winLoseRatio=" + winLoseRatio +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Fighter o){
+        return this.getWins() - o.getWins();
+    }
+
+
+    public int getWins() {
+        return wins;
+    }
+
+    public int getTotalFights() {
+        return totalFights;
+    }
+
+    public int getLosses() {
+        return losses;
+    }
+
+    public double getWinLoseRatio() {
+        return winLoseRatio;
     }
 
     @Override
