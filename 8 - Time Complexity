@@ -1,0 +1,12 @@
+ArrayList
+    .add = O(1)
+HashMap
+    .put = O(1)
+    .get = O(1)
+TreeMap
+    .put = O(logN)
+    .getKey = O(logN)
+    .getKey = O(logN)
+PriorityQueue
+     .add = O(log(N))
+     .remove = 0(1)
