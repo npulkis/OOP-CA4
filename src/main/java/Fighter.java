@@ -39,7 +39,16 @@ public class Fighter implements Comparable<Fighter> {
 
     @Override
     public int compareTo(Fighter o){
-        return this.getWins() - o.getWins();
+
+        boolean SameName = this.getName().equalsIgnoreCase(o.getName());
+
+        if (SameName){
+            return this.getName().compareToIgnoreCase(o.getName());
+        }else{
+            return this.getWins() - o.getWins();
+        }
+
+
     }
 
 

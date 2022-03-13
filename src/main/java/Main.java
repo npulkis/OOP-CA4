@@ -5,6 +5,7 @@ public class Main {
    ArrayList<Fighter> fighters;
    Map<String,Fighter> fighterHashMap;
    Map<String,Fighter> fighterTreeMap;
+   PriorityQueue<Fighter> fighterQueue;
 
    public static void main(String[] args) {
       Main app = new Main();
@@ -62,6 +63,10 @@ public class Main {
       fighterTreeMap.put("Holly",fighter9);
       fighterTreeMap.put("Jorge",fighter10);
 
+      fighterQueue= new PriorityQueue<>();
+      for (Fighter fighter: fighters){
+         fighterQueue.add(fighter);
+      }
 
       displayMainMenu();
    }
@@ -73,14 +78,16 @@ public class Main {
               + "2. Find object by key from HashMap\n"
               + "3. Display TreeMap\n"
               + "4. PriorityQueue Sequence\n"
-              + "5. Exit\n"
-              + "Enter Option [1,2,3,4,5]\n";
+              + "5. Display PriorityQueue \n"
+              + "6. Exit\n"
+              + "Enter Option [1,2,3,4,5,6]\n";
 
       final int DISPLAY_ARRAYLIST = 1;
       final int FIND_OBJECT_HASHMAP = 2;
       final int DISPLAY_TREEMAP = 3;
       final int PRIORITY_QUEUE= 4;
-      final int EXIT = 5;
+      final int DISPLAY_QUEUE = 5;
+      final int EXIT = 6;
 
       Scanner keyboard = new Scanner(System.in);
       int option = 0;
@@ -108,6 +115,10 @@ public class Main {
                   PriorityQueue();
                   promptEnterKey();
                   break;
+               case DISPLAY_QUEUE:
+                  System.out.println("Display PriorityQueue chosen");
+                  displayPriorityQueue(fighterQueue);
+                  promptEnterKey();
                case EXIT:
                   System.out.println("Exit menu option chosen");
                   break;
@@ -169,8 +180,8 @@ public class Main {
 
       //two second priority
 
-      priorityQueue.add(new Fighter("Fighter 3", 30 , 12));
-      priorityQueue.add(new Fighter("Fighter 4", 30 , 17));
+      priorityQueue.add(new Fighter("Fighter 3", 50 , 12));
+      priorityQueue.add(new Fighter("Fighter 4", 50 , 17));
 
       //remove and display one
 
@@ -178,11 +189,19 @@ public class Main {
       System.out.println(priorityQueue.remove()+ "\n");
 
       //add one top priority
-      priorityQueue.add(new Fighter("Fighter 5", 10 , 5));
+      priorityQueue.add(new Fighter("Fighter 5", 60 , 5));
 
       //remove and display all elements in priority order
 
       System.out.println("Display ALL");
+      while ( !priorityQueue.isEmpty() ) {
+         System.out.println(priorityQueue.remove());
+      }
+
+   }
+
+   public void displayPriorityQueue(PriorityQueue priorityQueue){
+
       while ( !priorityQueue.isEmpty() ) {
          System.out.println(priorityQueue.remove());
       }
