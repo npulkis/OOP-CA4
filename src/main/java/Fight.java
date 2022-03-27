@@ -1,3 +1,5 @@
+import DTOs.Fighter;
+
 public class Fight {
     private Fighter TitleHolder;
     private Fighter Opponent;

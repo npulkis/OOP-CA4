@@ -1,3 +1,5 @@
+package DTOs;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -16,7 +18,7 @@ public class Fighter implements Comparable<Fighter> {
         return name;
     }
 
-    Fighter(String name, int wins, int losses){
+    public Fighter(String name, int wins, int losses){
         this.name = name;
         this.totalFights= wins + losses;
         this.wins=wins;

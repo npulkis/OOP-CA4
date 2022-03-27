@@ -1,9 +1,15 @@
+import DAOs.FighterDaoInterface;
+import DAOs.MySqlFighterDao;
+import DTOs.Fighter;
+import Exceptions.DaoException;
+
 import java.util.*;
 
 public class Main {
 
+   FighterDaoInterface FighterDao;
    ArrayList<Fighter> fighters;
-   Map<String,Fighter> fighterHashMap;
+   Map<String, Fighter> fighterHashMap;
    Map<String,Fighter> fighterTreeMap;
    PriorityQueue<Fighter> fighterQueue;
 
@@ -68,6 +74,8 @@ public class Main {
          fighterQueue.add(fighter);
       }
 
+      FighterDao = new MySqlFighterDao();
+
       displayMainMenu();
    }
 
@@ -79,15 +87,17 @@ public class Main {
               + "3. Display TreeMap\n"
               + "4. PriorityQueue Sequence\n"
               + "5. Display PriorityQueue \n"
-              + "6. Exit\n"
-              + "Enter Option [1,2,3,4,5,6]\n";
+              + "6. Display All from Database\n"
+              + "7. Exit\n"
+              + "Enter Option [1,2,3,4,5,6,7]\n";
 
       final int DISPLAY_ARRAYLIST = 1;
       final int FIND_OBJECT_HASHMAP = 2;
       final int DISPLAY_TREEMAP = 3;
       final int PRIORITY_QUEUE= 4;
       final int DISPLAY_QUEUE = 5;
-      final int EXIT = 6;
+      final int DISPLAY_ALL_DB =6;
+      final int EXIT = 7;
 
       Scanner keyboard = new Scanner(System.in);
       int option = 0;
@@ -110,6 +120,7 @@ public class Main {
                case DISPLAY_TREEMAP:
                   System.out.println("Display Treemap option chosen.");
                   displayTreeMap(fighterTreeMap);
+                  break;
                case PRIORITY_QUEUE:
                   System.out.println("PriorityQueue option chosen");
                   PriorityQueue();
@@ -119,6 +130,11 @@ public class Main {
                   System.out.println("Display PriorityQueue chosen");
                   displayPriorityQueue(fighterQueue);
                   promptEnterKey();
+               case DISPLAY_ALL_DB:
+                  System.out.println("Display all from db");
+                  displayAllFromDB(FighterDao);
+                  promptEnterKey();
+                  break;
                case EXIT:
                   System.out.println("Exit menu option chosen");
                   break;
@@ -138,14 +154,14 @@ public class Main {
    public void displayArrayList(ArrayList<Fighter> fighters){
 
       for (Fighter fighter : fighters) {
-         System.out.println("Fighter:(Name: " + fighter.getName() + ", Wins: " +fighter.getWins() + ", Losses: "+fighter.getLosses()+
+         System.out.println("DTOs.Fighter:(Name: " + fighter.getName() + ", Wins: " +fighter.getWins() + ", Losses: "+fighter.getLosses()+
                  ", Total Fights: " + fighter.getTotalFights()+ ", Win/Loss ration: "+ fighter.getWinLoseRatio() +" )");
       }
       promptEnterKey();
    }
 
    public void findObjectFromHashmap(Map<String,Fighter> hashMap){
-      System.out.println("Enter Initials of Fighter (e.g Joe Bloggs = 'J.B' ) :");
+      System.out.println("Enter Initials of DTOs.Fighter (e.g Joe Bloggs = 'J.B' ) :");
 
       Scanner keyboard = new Scanner(System.in);
       String input = keyboard.nextLine().toUpperCase(Locale.ROOT);
@@ -175,13 +191,13 @@ public class Main {
       PriorityQueue<Fighter> priorityQueue= new PriorityQueue<>();
 
       //two third priority
-      priorityQueue.add(new Fighter("Fighter 1", 40 , 10));
-      priorityQueue.add(new Fighter("Fighter 2", 40 , 7));
+      priorityQueue.add(new Fighter("DTOs.Fighter 1", 40 , 10));
+      priorityQueue.add(new Fighter("DTOs.Fighter 2", 40 , 7));
 
       //two second priority
 
-      priorityQueue.add(new Fighter("Fighter 3", 50 , 12));
-      priorityQueue.add(new Fighter("Fighter 4", 50 , 17));
+      priorityQueue.add(new Fighter("DTOs.Fighter 3", 50 , 12));
+      priorityQueue.add(new Fighter("DTOs.Fighter 4", 50 , 17));
 
       //remove and display one
 
@@ -189,7 +205,7 @@ public class Main {
       System.out.println(priorityQueue.remove()+ "\n");
 
       //add one top priority
-      priorityQueue.add(new Fighter("Fighter 5", 60 , 5));
+      priorityQueue.add(new Fighter("DTOs.Fighter 5", 60 , 5));
 
       //remove and display all elements in priority order
 
@@ -206,6 +222,26 @@ public class Main {
          System.out.println(priorityQueue.remove());
       }
 
+   }
+
+   public void displayAllFromDB(FighterDaoInterface FighterDao){
+      try {
+
+         List<Fighter> fighters = FighterDao.findAllFighters();
+
+         if (fighters.isEmpty()){
+            System.out.println("No fighters found");
+         }else {
+            for (Fighter fighter:fighters){
+               System.out.println(fighter.toString());
+            }
+         }
+
+      }
+      catch(DaoException e)
+      {
+         e.printStackTrace();
+      }
    }
 
    }
