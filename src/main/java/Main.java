@@ -18,7 +18,7 @@ public class Main {
         app.start();
     }
 
-    public void start() {
+    public void start()  {
         Fighter fighter1 = new Fighter("Israel Adesanya", 22, 1);
         Fighter fighter2 = new Fighter("Conor McGregor", 22, 6);
         Fighter fighter3 = new Fighter("Dustin Poirier", 28, 7);
@@ -89,7 +89,8 @@ public class Main {
                 + "5. Display PriorityQueue \n"
                 + "6. Display All from Database\n"
                 + "7. Find fighter by id \n"
-                + "8. Exit\n"
+                + "8. Delete fighter by id \n"
+                + "9. Exit\n"
                 + "Enter Option [1,2,3,4,5,6,7,8]\n";
 
         final int DISPLAY_ARRAYLIST = 1;
@@ -99,7 +100,8 @@ public class Main {
         final int DISPLAY_QUEUE = 5;
         final int DISPLAY_ALL_DB = 6;
         final int FIND_BY_ID = 7;
-        final int EXIT = 8;
+        final int DELETE_BY_ID = 8;
+        final int EXIT = 9;
 
         Scanner keyboard = new Scanner(System.in);
         int option = 0;
@@ -116,7 +118,7 @@ public class Main {
                         displayArrayList(fighters);
                         break;
                     case FIND_OBJECT_HASHMAP:
-                        System.out.println("Find object by key from hashmap option chosen");
+                        System.out.println("Find object by key from hashmap option chosen.\nType 'exit' to return to main menu");
                         findObjectFromHashmap(fighterHashMap);
                         break;
                     case DISPLAY_TREEMAP:
@@ -138,10 +140,14 @@ public class Main {
                         promptEnterKey();
                         break;
                     case FIND_BY_ID:
-                        System.out.println("Find by id chosen");
+                        System.out.println("Find by id chosen\n Type 'exit' to return to menu");
                         findByIdFromDB(FighterDao);
                         promptEnterKey();
                         break;
+                    case DELETE_BY_ID:
+                        System.out.println("Delete by id chosen \n Type 'exit' to return to menu");
+                        deleteByIdFromDB(FighterDao);
+                        promptEnterKey();
                     case EXIT:
                         System.out.println("Exit menu option chosen");
                         break;
@@ -158,6 +164,44 @@ public class Main {
         System.out.println("\nExiting Main Menu, goodbye.");
     }
 
+    private void deleteByIdFromDB(FighterDaoInterface FighterDao) throws DaoException {
+
+        Scanner keyboard = new Scanner(System.in);
+        int id;
+        boolean check = false;
+
+        while (true){
+            System.out.print("Enter ID: ");
+
+
+
+            while (!keyboard.hasNextInt()){
+
+                String input = keyboard.next();
+                if (checkExit(input)){
+                    check = true;
+                    break;
+                }
+                System.out.println("Invalid input! - Please enter only int values");
+                System.out.print("Enter ID: ");
+            }
+            if (check){
+                break;
+            }
+            id = keyboard.nextInt();
+
+
+
+            if (FighterDao.deleteFighterByID(id)){
+                System.out.println("Fighter with id="+ id +" deleted from database");
+                break;
+            }
+
+        }
+
+
+    }
+
     public void displayArrayList(ArrayList<Fighter> fighters) {
 
         for (Fighter fighter : fighters) {
@@ -168,10 +212,14 @@ public class Main {
     }
 
     public void findObjectFromHashmap(Map<String, Fighter> hashMap) {
-        System.out.println("Enter Initials of DTOs.Fighter (e.g Joe Bloggs = 'J.B' ) :");
 
+        System.out.print("Enter Initials of DTOs.Fighter (e.g Joe Bloggs = 'J.B' ) :");
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine().toUpperCase(Locale.ROOT);
+
+        if (checkExit(input)){
+            return;
+        }
 
         if (hashMap.get(input) == null) {
             System.out.println("Object with provided key not found");
@@ -255,14 +303,23 @@ public class Main {
        Scanner keyboard = new Scanner(System.in);
 
        int id;
+       boolean check =false;
 
         while (true){
            System.out.print("Enter ID: ");
 
            while (!keyboard.hasNextInt()){
               String input = keyboard.next();
+
+               if (checkExit(input)){
+                   check = true;
+                   break;
+               }
               System.out.println("Invalid input! - Please enter only int values");
               System.out.print("Enter ID: ");
+           }
+           if(check){
+               break;
            }
            id = keyboard.nextInt();
 
@@ -276,6 +333,16 @@ public class Main {
         }
 
 
+    }
+
+    boolean checkExit(String input){
+
+        if (input.equalsIgnoreCase("exit")){
+            System.out.println("Exiting current menu");
+            return true;
+        }
+
+        return false;
     }
 
 }

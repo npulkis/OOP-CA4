@@ -116,4 +116,54 @@ public class MySqlFighterDao extends MySqlDao implements FighterDaoInterface
         }
         return fighter;     // reference to User object, or null value
     }
-}
+
+    @Override
+    public boolean deleteFighterByID(int id) throws DaoException {
+
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            try
+            {
+                connection = this.getConnection();
+
+
+                Fighter fighter = findFighterByID(id);
+
+                if (fighter ==null){
+                    System.out.println("Fighter not found");
+                    return false;
+                }
+
+
+                String query = "DELETE  FROM fighters WHERE id = ? ";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setInt(1, id);
+
+                preparedStatement.executeUpdate();
+                return true;
+
+            } catch (SQLException e)
+            {
+                throw new DaoException("deleteFighterByID " + e.getMessage());
+            } finally
+            {
+                try
+                {
+
+                    if (preparedStatement != null)
+                    {
+                        preparedStatement.close();
+                    }
+                    if (connection != null)
+                    {
+                        freeConnection(connection);
+                    }
+                } catch (SQLException e)
+                {
+                    throw new DaoException("findUserByUsernamePassword() " + e.getMessage());
+                }
+            }
+        }
+    }
+
+
