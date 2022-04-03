@@ -18,7 +18,7 @@ public class Main {
         app.start();
     }
 
-    public void start()  {
+    public void start() {
         Fighter fighter1 = new Fighter("Israel Adesanya", 22, 1);
         Fighter fighter2 = new Fighter("Conor McGregor", 22, 6);
         Fighter fighter3 = new Fighter("Dustin Poirier", 28, 7);
@@ -90,8 +90,9 @@ public class Main {
                 + "6. Display All from Database\n"
                 + "7. Find fighter by id \n"
                 + "8. Delete fighter by id \n"
-                + "9. Exit\n"
-                + "Enter Option [1,2,3,4,5,6,7,8]\n";
+                + "9. Add to Database\n"
+                + "10. Exit\n"
+                + "Enter Option [1,2,3,4,5,6,7,8,9,10]\n";
 
         final int DISPLAY_ARRAYLIST = 1;
         final int FIND_OBJECT_HASHMAP = 2;
@@ -101,7 +102,8 @@ public class Main {
         final int DISPLAY_ALL_DB = 6;
         final int FIND_BY_ID = 7;
         final int DELETE_BY_ID = 8;
-        final int EXIT = 9;
+        final int ADD_TO_DB = 9;
+        final int EXIT = 10;
 
         Scanner keyboard = new Scanner(System.in);
         int option = 0;
@@ -148,6 +150,12 @@ public class Main {
                         System.out.println("Delete by id chosen \n Type 'exit' to return to menu");
                         deleteByIdFromDB(FighterDao);
                         promptEnterKey();
+                        break;
+                    case ADD_TO_DB:
+                        System.out.println("Add to db chosen");
+                        addToDB(FighterDao);
+                        promptEnterKey();
+                        break;
                     case EXIT:
                         System.out.println("Exit menu option chosen");
                         break;
@@ -170,30 +178,28 @@ public class Main {
         int id;
         boolean check = false;
 
-        while (true){
+        while (true) {
             System.out.print("Enter ID: ");
 
 
-
-            while (!keyboard.hasNextInt()){
+            while (!keyboard.hasNextInt()) {
 
                 String input = keyboard.next();
-                if (checkExit(input)){
+                if (checkExit(input)) {
                     check = true;
                     break;
                 }
                 System.out.println("Invalid input! - Please enter only int values");
                 System.out.print("Enter ID: ");
             }
-            if (check){
+            if (check) {
                 break;
             }
             id = keyboard.nextInt();
 
 
-
-            if (FighterDao.deleteFighterByID(id)){
-                System.out.println("Fighter with id="+ id +" deleted from database");
+            if (FighterDao.deleteFighterByID(id)) {
+                System.out.println("Fighter with id=" + id + " deleted from database");
                 break;
             }
 
@@ -217,7 +223,7 @@ public class Main {
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine().toUpperCase(Locale.ROOT);
 
-        if (checkExit(input)){
+        if (checkExit(input)) {
             return;
         }
 
@@ -300,44 +306,104 @@ public class Main {
 
     public void findByIdFromDB(FighterDaoInterface FighterDao) throws DaoException {
 
-       Scanner keyboard = new Scanner(System.in);
 
-       int id;
-       boolean check =false;
+        Scanner keyboard = new Scanner(System.in);
 
-        while (true){
-           System.out.print("Enter ID: ");
+        int id;
+        boolean check = false;
 
-           while (!keyboard.hasNextInt()){
-              String input = keyboard.next();
+        while (true) {
+            System.out.print("Enter ID: ");
 
-               if (checkExit(input)){
-                   check = true;
-                   break;
-               }
-              System.out.println("Invalid input! - Please enter only int values");
-              System.out.print("Enter ID: ");
-           }
-           if(check){
-               break;
-           }
-           id = keyboard.nextInt();
+            while (!keyboard.hasNextInt()) {
+                String input = keyboard.next();
 
-           if (FighterDao.findFighterByID(id) !=null){
-              System.out.println("Fighter found: " + FighterDao.findFighterByID(id));
-              break;
-           }
+                if (checkExit(input)) {
+                    check = true;
+                    break;
+                }
+                System.out.println("Invalid input! - Please enter only int values");
+                System.out.print("Enter ID: ");
+            }
+            if (check) {
+                break;
+            }
+            id = keyboard.nextInt();
+
+            if (FighterDao.findFighterByID(id) != null) {
+                System.out.println("Fighter found: " + FighterDao.findFighterByID(id));
+                break;
+            }
 
 
-           System.out.println("Fighter with that ID not found");
+            System.out.println("Fighter with that ID not found");
         }
 
 
     }
 
-    boolean checkExit(String input){
+    void addToDB(FighterDaoInterface FighterDao) throws DaoException {
 
-        if (input.equalsIgnoreCase("exit")){
+        boolean check = false;
+        String name;
+        int wins = 0;
+        int losses = 0;
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("Enter name of fighter");
+        name = keyboard.nextLine();
+
+
+        while (true) {
+            System.out.print("Enter wins: ");
+
+            while (!keyboard.hasNextInt()) {
+                String input = keyboard.next();
+
+                if (checkExit(input)) {
+                    check = true;
+                    break;
+                }
+                System.out.println("Invalid input! - Please enter only int values");
+                System.out.print("Enter wins: ");
+            }
+            if (check) {
+                break;
+            }
+            wins = keyboard.nextInt();
+            break;
+        }
+
+        while (true) {
+            System.out.print("Enter losses: ");
+
+            while (!keyboard.hasNextInt()) {
+                String input = keyboard.next();
+
+                if (checkExit(input)) {
+                    check = true;
+                    break;
+                }
+                System.out.println("Invalid input! - Please enter only int values");
+                System.out.print("Enter losses: ");
+            }
+            if (check) {
+                break;
+            }
+            losses = keyboard.nextInt();
+            break;
+        }
+
+
+        FighterDao.addFighterToDB(name, wins, losses);
+
+        System.out.println("Fighter added.");
+
+    }
+
+    boolean checkExit(String input) {
+
+        if (input.equalsIgnoreCase("exit")) {
             System.out.println("Exiting current menu");
             return true;
         }

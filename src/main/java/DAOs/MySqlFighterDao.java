@@ -164,6 +164,28 @@ public class MySqlFighterDao extends MySqlDao implements FighterDaoInterface
                 }
             }
         }
+
+    @Override
+    public void addFighterToDB(String name,int wins,int losses) throws DaoException{
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = this.getConnection();
+
+            String query = "INSERT INTO fighters VALUES (null,?,?,?) ";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2,wins);
+            preparedStatement.setInt(3,losses);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
     }
 
 
