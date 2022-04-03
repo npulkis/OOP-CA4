@@ -92,8 +92,10 @@ public class Main {
                 + "8. Delete fighter by id \n"
                 + "9. Add to Database\n"
                 + "10. Show all with positive win rate\n"
-                + "11. Exit\n"
-                + "Enter Option [1,2,3,4,5,6,7,8,9,10,11]\n";
+                + "11. Find all as JSON\n"
+                + "12. Find by id as JSON\n"
+                + "13. Exit\n"
+                + "Enter Option [1-13]\n";
 
         final int DISPLAY_ARRAYLIST = 1;
         final int FIND_OBJECT_HASHMAP = 2;
@@ -105,7 +107,9 @@ public class Main {
         final int DELETE_BY_ID = 8;
         final int ADD_TO_DB = 9;
         final int POSITIVE_RATIO = 10;
-        final int EXIT = 11;
+        final int FIND_ALL_JSON = 11;
+        final int FIND_BY_ID_JSON = 12;
+        final int EXIT = 13;
 
         Scanner keyboard = new Scanner(System.in);
         int option = 0;
@@ -160,6 +164,11 @@ public class Main {
                         break;
                     case POSITIVE_RATIO:
                         displayPositiveRatioFromDB(FighterDao);
+                        promptEnterKey();
+                        break;
+                    case FIND_ALL_JSON:
+                        System.out.println("All fighters in JSON format");
+                        FighterDao.findAllAsJSON();
                         promptEnterKey();
                         break;
                     case EXIT:
@@ -296,6 +305,7 @@ public class Main {
         try {
 
             List<Fighter> fighters = FighterDao.findAllFighters();
+
 
             if (fighters.isEmpty()) {
                 System.out.println("No fighters found");

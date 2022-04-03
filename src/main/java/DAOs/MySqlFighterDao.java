@@ -2,6 +2,7 @@ package DAOs;
 
 import DTOs.Fighter;
 import Exceptions.DaoException;
+import com.google.gson.Gson;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -243,6 +244,17 @@ public class MySqlFighterDao extends MySqlDao implements FighterDaoInterface
         }
         return fightersList;     // may be empty
     }
+
+    @Override
+    public void findAllAsJSON() throws DaoException {
+        List<Fighter> fightersList  = findAllFighters();
+
+        Gson gsonParser = new Gson();
+        String fightersJSON = gsonParser.toJson(fightersList);
+        System.out.println(fightersJSON);
     }
+
+
+}
 
 
