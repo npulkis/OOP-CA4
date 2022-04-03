@@ -91,8 +91,9 @@ public class Main {
                 + "7. Find fighter by id \n"
                 + "8. Delete fighter by id \n"
                 + "9. Add to Database\n"
-                + "10. Exit\n"
-                + "Enter Option [1,2,3,4,5,6,7,8,9,10]\n";
+                + "10. Show all with positive win rate\n"
+                + "11. Exit\n"
+                + "Enter Option [1,2,3,4,5,6,7,8,9,10,11]\n";
 
         final int DISPLAY_ARRAYLIST = 1;
         final int FIND_OBJECT_HASHMAP = 2;
@@ -103,7 +104,8 @@ public class Main {
         final int FIND_BY_ID = 7;
         final int DELETE_BY_ID = 8;
         final int ADD_TO_DB = 9;
-        final int EXIT = 10;
+        final int POSITIVE_RATIO = 10;
+        final int EXIT = 11;
 
         Scanner keyboard = new Scanner(System.in);
         int option = 0;
@@ -154,6 +156,10 @@ public class Main {
                     case ADD_TO_DB:
                         System.out.println("Add to db chosen");
                         addToDB(FighterDao);
+                        promptEnterKey();
+                        break;
+                    case POSITIVE_RATIO:
+                        displayPositiveRatioFromDB(FighterDao);
                         promptEnterKey();
                         break;
                     case EXIT:
@@ -399,6 +405,26 @@ public class Main {
 
         System.out.println("Fighter added.");
 
+    }
+
+    public void displayPositiveRatioFromDB(FighterDaoInterface FighterDao) {
+        try {
+
+            List<Fighter> fighters = FighterDao.findAllPositiveRatio();
+
+            Collections.sort(fighters,new RatioComparator());
+
+            if (fighters.isEmpty()) {
+                System.out.println("No fighters found");
+            } else {
+                for (Fighter fighter : fighters) {
+                    System.out.println(fighter.toString());
+                }
+            }
+
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
     boolean checkExit(String input) {

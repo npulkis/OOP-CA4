@@ -11,5 +11,8 @@ public interface FighterDaoInterface {
     public Fighter findFighterByID(int id) throws DaoException;
     boolean deleteFighterByID(int id) throws DaoException;
     void addFighterToDB(String name, int wins, int losses) throws DaoException;
+    public List<Fighter> findAllPositiveRatio() throws DaoException;
+
+
 
 }
