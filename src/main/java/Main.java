@@ -171,6 +171,10 @@ public class Main {
                         FighterDao.findAllAsJSON();
                         promptEnterKey();
                         break;
+                    case FIND_BY_ID_JSON:
+                        findByIdFromDBasJSON(FighterDao);
+                        promptEnterKey();
+                        break;
                     case EXIT:
                         System.out.println("Exit menu option chosen");
                         break;
@@ -445,6 +449,45 @@ public class Main {
         }
 
         return false;
+    }
+
+
+    public void findByIdFromDBasJSON(FighterDaoInterface FighterDao) throws DaoException {
+
+
+        Scanner keyboard = new Scanner(System.in);
+
+        int id;
+        boolean check = false;
+
+        while (true) {
+            System.out.print("Enter ID: ");
+
+            while (!keyboard.hasNextInt()) {
+                String input = keyboard.next();
+
+                if (checkExit(input)) {
+                    check = true;
+                    break;
+                }
+                System.out.println("Invalid input! - Please enter only int values");
+                System.out.print("Enter ID: ");
+            }
+            if (check) {
+                break;
+            }
+            id = keyboard.nextInt();
+
+            if (FighterDao.findFighterByID(id) != null) {
+                System.out.println("Fighter found as JSON\n " + FighterDao.findByIdAsJSON(id));
+                break;
+            }
+
+
+            System.out.println("Fighter with that ID not found");
+        }
+
+
     }
 
 }

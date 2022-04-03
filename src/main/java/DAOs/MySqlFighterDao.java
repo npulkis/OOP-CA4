@@ -255,6 +255,19 @@ public class MySqlFighterDao extends MySqlDao implements FighterDaoInterface
     }
 
 
+    @Override
+    public String findByIdAsJSON(int id) throws DaoException{
+
+       Fighter fighter =  findFighterByID(id);
+       Gson gsonParser = new Gson();
+
+       String jsonFighter = gsonParser.toJson(fighter);
+
+        return jsonFighter;
+
+    }
+
+
 }
 
 

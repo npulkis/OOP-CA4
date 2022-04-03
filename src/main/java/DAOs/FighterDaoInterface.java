@@ -13,6 +13,7 @@ public interface FighterDaoInterface {
     void addFighterToDB(String name, int wins, int losses) throws DaoException;
     List<Fighter> findAllPositiveRatio() throws DaoException;
     void findAllAsJSON() throws DaoException;
+    String findByIdAsJSON(int id) throws DaoException;
 
 
 
