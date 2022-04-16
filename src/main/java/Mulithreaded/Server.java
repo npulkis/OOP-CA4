@@ -123,6 +123,16 @@ public class Server
 
                             socketWriter.println("Fighter Added");
 
+                        }else if (message.startsWith("deleteByID")){
+
+                            int id = Integer.parseInt(message.substring(11));
+                            if (FighterDao.findFighterByID(id) != null){
+
+                                FighterDao.deleteFighterByID(id);
+                                socketWriter.println("Fighter deleted");
+                            }else {
+                                socketWriter.println("Fighter not found");
+                            }
                         } else {
                             socketWriter.println("Invalid Input Entered");
                         }

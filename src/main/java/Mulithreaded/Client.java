@@ -58,16 +58,18 @@ public class Client
 
             final String MENU_ITEMS = "\n*** Main Menu ***\n"
                     + "1. Find by ID\n"
-                    + "2. Find all as JSON\n"
+                    + "2. Find all \n"
                     + "3. Add a fighter\n"
-                    + "4. Exit\n"
-                    + "Enter Option [1-4]\n";
+                    + "4. Delete by ID\n"
+                    + "5. Exit\n"
+                    + "Enter Option [1-5]\n";
 
 
             final int FIND_BY_ID = 1;
             final int FIND_ALL_JSON = 2;
             final int ADD_A_FIGHTER = 3;
-            final int EXIT = 4;
+            final int DELETE_BY_ID =4;
+            final int EXIT = 5;
 
             Scanner keyboard = new Scanner(System.in);
             int option = 0;
@@ -115,6 +117,17 @@ public class Client
                            String json = createNewFighterJSON();
                             socketWriter.println("addFighter");
                             socketWriter.println(json);
+
+                            System.out.println("Message from server: "+ socketReader.nextLine());
+
+                            promptEnterKey();
+                            break;
+                        case DELETE_BY_ID:
+
+                            System.out.print("Enter ID of Fighter: ");
+                            String dID = keyboard.nextLine();
+
+                            socketWriter.println("deleteByID "+dID);
 
                             System.out.println("Message from server: "+ socketReader.nextLine());
 
