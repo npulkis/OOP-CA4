@@ -58,12 +58,14 @@ public class Client
 
             final String MENU_ITEMS = "\n*** Main Menu ***\n"
                     + "1. Find all as JSON\n"
-                    + "2. Exit\n"
-                    + "Enter Option [1-2]\n";
+                    + "2. Add a fighter\n"
+                    + "3. Exit\n"
+                    + "Enter Option [1-3]\n";
 
 
             final int FIND_ALL_JSON = 1;
-            final int EXIT = 2;
+            final int ADD_A_FIGHTER = 2;
+            final int EXIT = 3;
 
             Scanner keyboard = new Scanner(System.in);
             int option = 0;
@@ -83,13 +85,27 @@ public class Client
                             Fighter[] fighters = gsonParser.fromJson(allFighters,Fighter[].class);
                             System.out.println("Mulithreaded.Client message: All fighters in JSON format ");
 
-                            for (Fighter fighter : fighters){
-                                System.out.println(fighter);
+                            if (fighters.length <1){
+                                System.out.println("No Fighters found");
+                            }else {
+                                for (Fighter fighter : fighters){
+                                    System.out.println(fighter);
+                                }
                             }
+
 
                             promptEnterKey();
                             break;
 
+                        case ADD_A_FIGHTER:
+                           String json = createNewFighterJSON();
+                            socketWriter.println("addFighter");
+                            socketWriter.println(json);
+
+                            System.out.println("Message from server: "+ socketReader.nextLine());
+
+                            promptEnterKey();
+                            break;
                         case EXIT:
                             System.out.println("Exit menu option chosen");
                             break;
@@ -129,6 +145,58 @@ public class Client
         System.out.println("\nPress \"ENTER\" to continue...");
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
+    }
+
+    public String createNewFighterJSON(){
+        boolean check = false;
+        String name;
+        int wins = 0;
+        int losses = 0;
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("Enter name of fighter");
+        name = keyboard.nextLine();
+
+
+        while (true) {
+            System.out.print("Enter wins: ");
+
+            while (!keyboard.hasNextInt()) {
+                String input = keyboard.next();
+
+                System.out.println("Invalid input! - Please enter only int values");
+                System.out.print("Enter wins: ");
+            }
+            if (check) {
+                break;
+            }
+            wins = keyboard.nextInt();
+            break;
+        }
+
+        while (true) {
+            System.out.print("Enter losses: ");
+
+            while (!keyboard.hasNextInt()) {
+                String input = keyboard.next();
+
+                System.out.println("Invalid input! - Please enter only int values");
+                System.out.print("Enter losses: ");
+            }
+            if (check) {
+                break;
+            }
+            losses = keyboard.nextInt();
+            break;
+        }
+
+        Fighter newFighter = new Fighter(name,wins,losses);
+
+        Gson gsonParser = new Gson();
+
+        return gsonParser.toJson(newFighter);
+
+
     }
 }
 

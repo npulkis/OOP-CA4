@@ -2,6 +2,8 @@ package Mulithreaded;
 
 import DAOs.FighterDaoInterface;
 import DAOs.MySqlFighterDao;
+import DTOs.Fighter;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -99,7 +101,16 @@ public class Server
                         if (message.startsWith("findAll")) {
                              socketWriter.println(FighterDao.findAllAsJSON());
 
-                        } else if (message.startsWith("DisplayAll")) {
+                        } else if (message.startsWith("addFighter")) {
+                            String jsonFighter = socketReader.readLine();
+
+                            Gson gsonParser = new Gson();
+
+                            Fighter newFighter = gsonParser.fromJson(jsonFighter,Fighter.class);
+
+                            FighterDao.addFighterToDB(newFighter.getName(), newFighter.getWins(),newFighter.getLosses());
+
+                            socketWriter.println("Fighter Added");
 
                         } else {
                             socketWriter.println("Invalid Input Entered");
