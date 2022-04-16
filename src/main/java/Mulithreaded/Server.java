@@ -98,7 +98,18 @@ public class Server
                         System.out.println("Mulithreaded.Server: (ClientHandler): Read command from client " + clientNumber + ": " + message);
 
 
-                        if (message.startsWith("findAll")) {
+                        if (message.startsWith("findByID")){
+
+                            int id = Integer.parseInt(message.substring(9));
+                            if (FighterDao.findFighterByID(id) != null){
+
+
+                                socketWriter.println("Fighter Found: "+FighterDao.findByIdAsJSON(id));
+                            }else {
+                               socketWriter.println("Fighter not found");
+                            }
+                        }
+                        else if (message.startsWith("findAll")) {
                              socketWriter.println(FighterDao.findAllAsJSON());
 
                         } else if (message.startsWith("addFighter")) {

@@ -57,15 +57,17 @@ public class Client
 
 
             final String MENU_ITEMS = "\n*** Main Menu ***\n"
-                    + "1. Find all as JSON\n"
-                    + "2. Add a fighter\n"
-                    + "3. Exit\n"
-                    + "Enter Option [1-3]\n";
+                    + "1. Find by ID\n"
+                    + "2. Find all as JSON\n"
+                    + "3. Add a fighter\n"
+                    + "4. Exit\n"
+                    + "Enter Option [1-4]\n";
 
 
-            final int FIND_ALL_JSON = 1;
-            final int ADD_A_FIGHTER = 2;
-            final int EXIT = 3;
+            final int FIND_BY_ID = 1;
+            final int FIND_ALL_JSON = 2;
+            final int ADD_A_FIGHTER = 3;
+            final int EXIT = 4;
 
             Scanner keyboard = new Scanner(System.in);
             int option = 0;
@@ -77,6 +79,18 @@ public class Client
                     option = Integer.parseInt(userInput);
 
                     switch (option) {
+
+                        case FIND_BY_ID:
+
+                            System.out.print("Enter ID of Fighter: ");
+                            String id = keyboard.nextLine();
+
+                            socketWriter.println("findByID "+id);
+
+                            System.out.println("Message from server: \n"+ socketReader.nextLine());
+
+                            promptEnterKey();
+                            break;
                         case FIND_ALL_JSON:
                             System.out.println("");
                             socketWriter.println("findAll");
