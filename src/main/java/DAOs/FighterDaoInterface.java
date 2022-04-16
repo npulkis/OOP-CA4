@@ -12,7 +12,7 @@ public interface FighterDaoInterface {
     boolean deleteFighterByID(int id) throws DaoException;
     void addFighterToDB(String name, int wins, int losses) throws DaoException;
     List<Fighter> findAllPositiveRatio() throws DaoException;
-    void findAllAsJSON() throws DaoException;
+    String findAllAsJSON() throws DaoException;
     String findByIdAsJSON(int id) throws DaoException;
 
 

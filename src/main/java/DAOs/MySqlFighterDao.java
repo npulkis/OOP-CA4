@@ -246,12 +246,12 @@ public class MySqlFighterDao extends MySqlDao implements FighterDaoInterface
     }
 
     @Override
-    public void findAllAsJSON() throws DaoException {
+    public String findAllAsJSON() throws DaoException {
         List<Fighter> fightersList  = findAllFighters();
 
         Gson gsonParser = new Gson();
         String fightersJSON = gsonParser.toJson(fightersList);
-        System.out.println(fightersJSON);
+        return  fightersJSON;
     }
 
 

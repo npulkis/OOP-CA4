@@ -168,7 +168,7 @@ public class Main {
                         break;
                     case FIND_ALL_JSON:
                         System.out.println("All fighters in JSON format");
-                        FighterDao.findAllAsJSON();
+                        System.out.println(FighterDao.findAllAsJSON());
                         promptEnterKey();
                         break;
                     case FIND_BY_ID_JSON:
