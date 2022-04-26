@@ -1,23 +1,5 @@
 package Mulithreaded;
 
-/** CLIENT                                                  March 2021
- *
- * This Mulithreaded.Client program asks the user to input commands to be sent to the server.
- *
- * There are only two valid commands in the protocol: "Time" and "Echo"
- *
- * If user types "Time" the server should reply with the current server time.
- *
- * If the user types "Echo" followed by a message, the server will echo back the message.
- * e.g. "Echo Nice to meet you"
- *
- * If the user enters any other input, the server will not understand, and
- * will send back a message to the effect.
- *
- * NOte: You must run the server before running this the client.
- * (Both the server and the client will be running together on this computer)
- */
-
 
 import DTOs.Fighter;
 import com.google.gson.Gson;
@@ -29,47 +11,35 @@ import java.net.Socket;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Client
-{
-    public static void main(String[] args)
-    {
+public class Client {
+    public static void main(String[] args) {
         Client client = new Client();
         client.start();
     }
 
-    public void start()
-    {
+    public void start() {
         Scanner in = new Scanner(System.in);
         try {
             Socket socket = new Socket("localhost", 8080);  // connect to server socket
             System.out.println("Mulithreaded.Client: Port# of this client : " + socket.getLocalPort());
-            System.out.println("Mulithreaded.Client: Port# of Mulithreaded.Server :" + socket.getPort() );
+            System.out.println("Mulithreaded.Client: Port# of Mulithreaded.Server :" + socket.getPort());
 
             System.out.println("Mulithreaded.Client message: The Mulithreaded.Client is running and has connected to the server");
-//
-//            System.out.println("Please enter a command:  (\"Time\" to get time, or \"Echo message\" to get echo) \n>");
-//            String command = in.nextLine();
 
             OutputStream os = socket.getOutputStream();
             PrintWriter socketWriter = new PrintWriter(os, true);   // true => auto flush buffers
             Scanner socketReader = new Scanner(socket.getInputStream());  // wait for, and retrieve the reply
 
 
-
-            final String MENU_ITEMS = "\n*** Main Menu ***\n"
-                    + "1. Find by ID\n"
-                    + "2. Find all \n"
-                    + "3. Add a fighter\n"
-                    + "4. Delete by ID\n"
-                    + "5. Exit\n"
-                    + "Enter Option [1-5]\n";
+            final String MENU_ITEMS = "\n*** Main Menu ***\n" + "1. Find by ID\n" + "2. Find all \n" + "3. Add a fighter\n" + "4. Delete by ID\n" + "5. Fighters with positive win ratio \n" + "6. Exit\n" + "Enter Option [1-6]\n";
 
 
             final int FIND_BY_ID = 1;
             final int FIND_ALL_JSON = 2;
             final int ADD_A_FIGHTER = 3;
-            final int DELETE_BY_ID =4;
-            final int EXIT = 5;
+            final int DELETE_BY_ID = 4;
+            final int POSITIVE_RATIO = 5;
+            final int EXIT = 6;
 
             Scanner keyboard = new Scanner(System.in);
             int option = 0;
@@ -87,24 +57,24 @@ public class Client
                             System.out.print("Enter ID of Fighter: ");
                             String id = keyboard.nextLine();
 
-                            socketWriter.println("findByID "+id);
+                            socketWriter.println("findByID " + id);
 
-                            System.out.println("Message from server: \n"+ socketReader.nextLine());
+                            System.out.println("Message from server: \n" + socketReader.nextLine());
 
                             promptEnterKey();
                             break;
                         case FIND_ALL_JSON:
-                            System.out.println("");
+                            System.out.println();
                             socketWriter.println("findAll");
                             String allFighters = socketReader.nextLine();
-                            Gson gsonParser= new Gson();
-                            Fighter[] fighters = gsonParser.fromJson(allFighters,Fighter[].class);
+                            Gson gsonParser = new Gson();
+                            Fighter[] fighters = gsonParser.fromJson(allFighters, Fighter[].class);
                             System.out.println("Mulithreaded.Client message: All fighters in JSON format ");
 
-                            if (fighters.length <1){
+                            if (fighters.length < 1) {
                                 System.out.println("No Fighters found");
-                            }else {
-                                for (Fighter fighter : fighters){
+                            } else {
+                                for (Fighter fighter : fighters) {
                                     System.out.println(fighter);
                                 }
                             }
@@ -114,11 +84,11 @@ public class Client
                             break;
 
                         case ADD_A_FIGHTER:
-                           String json = createNewFighterJSON();
+                            String json = createNewFighterJSON();
                             socketWriter.println("addFighter");
                             socketWriter.println(json);
 
-                            System.out.println("Message from server: "+ socketReader.nextLine());
+                            System.out.println("Message from server: " + socketReader.nextLine());
 
                             promptEnterKey();
                             break;
@@ -127,12 +97,31 @@ public class Client
                             System.out.print("Enter ID of Fighter: ");
                             String dID = keyboard.nextLine();
 
-                            socketWriter.println("deleteByID "+dID);
+                            socketWriter.println("deleteByID " + dID);
 
-                            System.out.println("Message from server: "+ socketReader.nextLine());
+                            System.out.println("Message from server: " + socketReader.nextLine());
 
                             promptEnterKey();
                             break;
+                        case POSITIVE_RATIO:
+                            socketWriter.println("positiveWin");
+
+                            Gson gsonParse = new Gson();
+
+                            String allFighter = socketReader.nextLine();
+
+                            Fighter[] fighter = gsonParse.fromJson(allFighter, Fighter[].class);
+                            System.out.println("Mulithreaded.Client message: All fighters in JSON format ");
+
+                            if (fighter.length < 1) {
+                                System.out.println("No Fighters found");
+                            } else {
+                                for (Fighter fight : fighter) {
+                                    System.out.println(fight);
+                                }
+                            }
+                            promptEnterKey();
+
                         case EXIT:
                             System.out.println("Exit menu option chosen");
                             break;
@@ -147,24 +136,13 @@ public class Client
             } while (option != EXIT);
 
             System.out.println("\nExiting Main Menu, goodbye.");
-//
-//            if(command.startsWith("Time"))   //we expect the server to return a time
-//            {
-//                String timeString = socketReader.nextLine();
-//                System.out.println("Mulithreaded.Client message: Response from server Time: " + timeString);
-//            }
-//            else                            // the user has entered the Echo command or an invalid command
-//            {
-//                String input = socketReader.nextLine();
-//                System.out.println("Mulithreaded.Client message: Response from server: \"" + input + "\"");
-//            }
 
             socketWriter.close();
             socketReader.close();
             socket.close();
 
         } catch (IOException e) {
-            System.out.println("Mulithreaded.Client message: IOException: "+e);
+            System.out.println("Mulithreaded.Client message: IOException: " + e);
         }
     }
 
@@ -174,7 +152,7 @@ public class Client
         scanner.nextLine();
     }
 
-    public String createNewFighterJSON(){
+    public String createNewFighterJSON() {
         boolean check = false;
         String name;
         int wins = 0;
@@ -217,7 +195,7 @@ public class Client
             break;
         }
 
-        Fighter newFighter = new Fighter(name,wins,losses);
+        Fighter newFighter = new Fighter(name, wins, losses);
 
         Gson gsonParser = new Gson();
 
@@ -226,6 +204,3 @@ public class Client
 
     }
 }
-
-
-//  LocalTime time = LocalTime.parse(timeString); // Parse timeString -> convert to LocalTime object if required
